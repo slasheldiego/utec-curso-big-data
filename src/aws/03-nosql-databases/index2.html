@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <style>
+        /* Estilos para el catálogo de productos */
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+            display: inline-block;
+        }
+
+        .product img {
+            max-width: 300px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Productos</h1>
+    <button onclick="realizarSolicitudGET()">Cargar Catálogo</button>
+    <div id="catalog"></div>
+
+    <script>
+        function realizarSolicitudGET() {
+            // URL de la API que deseas consultar
+            var apiUrl = 'xxxx'; // Reemplaza con la URL de tu propia API
+
+            // Encabezados personalizados
+            var headers = new Headers();
+            headers.append('Accept', '*/*');
+            headers.append('Accept-Encoding', 'gzip, deflate, br');
+            headers.append('Connection', 'keep-alive');
+            headers.append('x-api-key', 'xxxx'); // Reemplaza 'tu-api-key' con tu clave API
+
+            // Configurar la solicitud
+            var opciones = {
+                method: 'GET',
+                headers: headers,
+                mode: 'cors', // Opcional: puedes configurar el modo de acceso cruzado (cross-origin)
+            };
+
+            // Realizar la solicitud GET utilizando fetch
+            fetch(apiUrl, opciones)
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error al realizar la solicitud: ' + response.status);
+                    }
+                })
+                .then(function(data) {
+                    // Procesar la respuesta JSON y mostrar el catálogo de productos
+                    mostrarCatalogo(data);
+                })
+                .catch(function(error) {
+                    // Capturar y mostrar errores
+                    console.error('Error:', error);
+                });
+        }
+
+        function mostrarCatalogo(productos) {
+            var catalogDiv = document.getElementById('catalog');
+            catalogDiv.innerHTML = '';
+
+            productos.forEach(function(producto) {
+                var productDiv = document.createElement('div');
+                productDiv.className = 'product';
+
+                var nombre = document.createElement('h2');
+                nombre.textContent = producto.idProducto;
+
+                var precio = document.createElement('p');
+                precio.textContent = 'Precio: ' + producto.Precio;
+
+                var tipoproducto = document.createElement('p');
+                tipoproducto.textContent = producto.TipoProducto;
+
+                var marca = document.createElement('p');
+                marca.textContent = producto.Marca;
+
+                var image = document.createElement('img');
+                image.src = producto.Image;
+
+                productDiv.appendChild(nombre);
+                productDiv.appendChild(precio);
+                productDiv.appendChild(tipoproducto);
+                productDiv.appendChild(marca);
+                productDiv.appendChild(image);
+
+                catalogDiv.appendChild(productDiv);
+            });
+        }
+    </script>
+</body>
+</html>

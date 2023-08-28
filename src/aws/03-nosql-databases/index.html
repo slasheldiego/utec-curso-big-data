@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejemplo de solicitud GET a una API con encabezados personalizados</title>
+</head>
+<body>
+    <h1>Resultados de la solicitud GET a la API</h1>
+    <button onclick="realizarSolicitudGET()">Realizar solicitud GET</button>
+    <pre id="resultado"></pre>
+
+    <script>
+        function realizarSolicitudGET() {
+            // URL de la API que deseas consultar
+            var apiUrl = 'xxxx';  // Reemplaza con la URL de tu propia API
+
+            // Encabezados personalizados
+            var headers = new Headers();
+            headers.append('Accept', '*/*');
+            headers.append('Accept-Encoding', 'gzip, deflate, br');
+            headers.append('Connection', 'keep-alive');
+            headers.append('x-api-key', 'xxxx');  // Reemplaza 'tu-api-key' con tu clave API 
+
+            // Configurar la solicitud
+            var opciones = {
+                method: 'GET',
+                headers: headers,
+                mode: 'cors', // Opcional: puedes configurar el modo de acceso cruzado (cross-origin)
+            };
+
+            // Realizar la solicitud GET utilizando fetch
+            fetch(apiUrl, opciones)
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error al realizar la solicitud: ' + response.status);
+                    }
+                })
+                .then(function(data) {
+                    // Procesar la respuesta JSON
+                    var resultadoPre = document.getElementById('resultado');
+                    resultadoPre.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(function(error) {
+                    // Capturar y mostrar errores
+                    var resultadoPre = document.getElementById('resultado');
+                    resultadoPre.textContent = 'Error: ' + error.message;
+                });
+        }
+    </script>
+</body>
+</html>
